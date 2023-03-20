@@ -1,0 +1,43 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+int arr[] = { 1, 5, 7, 4, 6, 8, 9, 10, 3, 2, 15, 11, 24 };
+
+void quick_Sort(int* arr, int start, int end) {
+	if (start >= end) {
+		return;
+	}
+
+	int pivot = start;
+	int i = pivot + 1;	//왼쪽 지점 출발
+	int j = end;	//오른쪽 지점 출발
+
+	while (i <= j) {	//지점이 서로 교차할때 까지
+		while (i <= end && arr[i] <= arr[pivot])	//arr[i]가 피봇값보다 작을때 다음으로 옮겨줌
+			i++;
+		while (j > start && arr[j] >= arr[pivot])	//arr[j]가 피봇값보다 클때 다음으로 옮겨줌
+			j--;
+
+		if (i > j) {	//교차되어 있는 상황이면
+			swap(arr[j], arr[pivot]);	//피봇을 바꾸어 준다
+		}
+		else {
+			swap(arr[i], arr[j]);	//위치 swap
+		}
+	}
+
+	quick_Sort(arr, start, j - 1);
+	quick_Sort(arr, start + 1, end);
+}
+
+int main(void) {
+	quick_Sort(arr, 0, 12);
+
+	for (int i = 0; i < 13; i++) {
+		cout << arr[i] << ' ';
+	}
+
+	return 0;
+}
