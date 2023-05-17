@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#define INF 1e9   //무한을 의미하는 숫자
+
+using namespace std;
+
+int n, m, start;   //처음 시작할때 노드의 갯수 간선의 갯수, 시작 노드 번호 설정
+vector<pair<int, int>> graph[100001];   //각 노드에 연결되어 있는 노드에 대한 정보를 담는 배열
+bool visited[100001];   //방문했는지 혹은 미방문 상태인지 체크하는 목적
+int d[100001];   //최단 거리 테이블 판단할때 이용
+
+int getSmllestNode() {
+    int min_value = INF; //일단 최소의 값을 무한의 값으로 초기화 시켜두고 시작
+    int index = 0;
+
+    for (int i = 0; i <= n; i++) {
+        if (d[i] < min_value && !visited[i]) {  //최단거리 테이블의 거리가 min_value보다 작고 방문하지 않았으면
+            min_value = d[i];
+            index = i;
+        }
+    }
+
+    return index;
+}
+
+void dijkstra(int start) {
+    //시작 노드에 대한 정보 초기화
+    d[start] = 0;
+    visited[start] = true;
+
+    for (int j = 0; j < graph[start].size(); j++) {
+        d[graph[start][j].first] = graph[start][j].second;   //?
+    }
+
+    for (int i = 0; i < n - 1; i++) {
+        int now = getSmllestNode();
+        visited[now] = true;    //방문처리
+
+        for (int j = 0; j < graph[now].size(); j++) {
+            int cost = d[now] + graph[now][j].second;
+
+            if (cost < d[graph[now][j].first]) {
+                d[graph[now][j].first] = cost;
+            }
+        }
+    }
+}
+
+int main() {
+    cin >> n >> m >> start;
+
+    for (int i = 0; i < m; i++) {
+        int a, b, c;
+        cin >> a >> b >> c;   //간선의 정보를 넣어주기
+        graph[a].push_back({ b, c });
+    }
+
+    fill_n(d, 100001, INF);   //최단 거리 테이블에 무한으로 초기화   fill_n이 안에 채우는 함수
+
+    dijkstra(start);
+
+    for (int i = 1; i <= n; i++) {
+        if (d[i] == INF) {
+            cout << "INFINITY" << '\n';
+        }
+        else
+            cout << d[i] << '\n';
+    }
+}
