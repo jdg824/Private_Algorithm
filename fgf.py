@@ -219,7 +219,8 @@ def is_laying_down(keypoints):
         
         tolerance = 130
 
-        for decision in [y_diff_neck_left_wrist, y_diff_neck_right_wrist, y_diff_neck_mid_hip, y_diff_neck_left_ankle, y_diff_neck_right_ankle]:
+        for decision in [y_diff_neck_left_wrist, y_diff_neck_right_wrist, y_diff_neck_mid_hip,
+                         y_diff_neck_left_ankle, y_diff_neck_right_ankle]:
             if decision is not None and decision >= tolerance:
                 break
         else:
